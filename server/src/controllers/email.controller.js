@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import { createTransporter } from '../utils/mailer.js';
 
 export const sendEmailWithAttachment = (req, res) => {
     const pdf = req.file;
@@ -7,21 +7,8 @@ export const sendEmailWithAttachment = (req, res) => {
         return res.status(400).send('No se ha subido ningún archivo PDF.');
     }
 
-    // Configura el transportador de Nodemailer usando variables de entorno
-    const transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST || 'smtp.hostinger.com',
-        port: parseInt(process.env.EMAIL_PORT) || 465,
-        secure: process.env.EMAIL_SECURE === 'true' || true,
-        auth: {
-            user: process.env.EMAIL_EMAIL,
-            pass: process.env.EMAIL_PASSWORD
-        },
-        // Agregar configuración adicional para Hostinger
-        tls: {
-            rejectUnauthorized: false
-        }
-    });
-    
+    const transporter = createTransporter();
+
     const mailOptions = {
         from: process.env.EMAIL_EMAIL,
         to: "infoenvios@calcemas.com", // Permitir destinatario personalizado

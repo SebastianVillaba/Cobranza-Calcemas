@@ -10,6 +10,7 @@ import emailRoute from "./src/routes/email.route.js";
 import cierreRoute from "./src/routes/cierre.route.js";
 import listadoRoute from "./src/routes/listado.route.js";
 import { authenticateToken } from "./src/middleware/auth.js";
+import { iniciarCierreAutomatico } from "./src/jobs/cierreAutomatico.job.js";
 
 dotenv.config();
 const app=express();
@@ -31,4 +32,5 @@ app.use('/api/listado', authenticateToken, listadoRoute)
 
 app.listen(PORT,'0.0.0.0',() => {
     console.log(`Servidor corriendo en http://0.0.0.0:${PORT}`)
+    iniciarCierreAutomatico();
 });
