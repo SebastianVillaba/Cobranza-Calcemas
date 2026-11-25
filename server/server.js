@@ -51,7 +51,12 @@ if (fs.existsSync(path.join(FRONTEND_DIST, 'index.html'))) {
     console.warn(`Frontend no encontrado en ${FRONTEND_DIST}; solo se sirve la API`);
 }
 
-app.listen(PORT, HOST, () => {
+app.listen(PORT, HOST, (err) => {
+    // Express 5 pasa el error de listen (ej. EADDRINUSE) al callback en vez de tirar el proceso
+    if (err) {
+        console.error(`No se pudo escuchar en ${HOST}:${PORT}:`, err.message);
+        process.exit(1);
+    }
     console.log(`Servidor corriendo en http://${HOST}:${PORT}`)
     iniciarCierreAutomatico();
 });
